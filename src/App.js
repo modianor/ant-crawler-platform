@@ -32,7 +32,7 @@ class App extends Component {
                     <Layout
                         className={this.state.collapsed ? 'content-normal' : 'content-max'}
                     >
-                        <RootBreadcrumbRoute/>
+                        {/*<RootBreadcrumbRoute/>*/}
                         <Content style={{margin: 0, minHeight: 280}}>
                             <ContentRoute/>
                         </Content>

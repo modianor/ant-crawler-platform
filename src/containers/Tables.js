@@ -1,6 +1,8 @@
 import React from 'react'
-import {Button, Card, Col, message, Modal, Row, Table} from 'antd'
+import {Button, Card, Col, Form, Input, message, Modal, Row, Table} from 'antd'
 import Search from "antd/es/input/Search";
+import TextArea from "antd/es/input/TextArea";
+import PolicyModal from "./PolicyModal";
 
 class Tables extends React.Component {
     constructor(props, context) {
@@ -114,10 +116,12 @@ class Tables extends React.Component {
                     disabled: record.policyId === 'Disable Policy', // Column configuration not to be checked
                     name: record.policyId,
                 }),
-            }
+            },
+            visible: true //修改弹框
         }
         this.handleDeleteOk = this.handleDeleteOk.bind(this);
         this.deletePolicy = this.deletePolicy.bind(this);
+        this.handleAddOrUpdateOk = this.handleAddOrUpdateOk.bind(this);
     }
 
     handleDeleteOk = () => {
@@ -145,7 +149,7 @@ class Tables extends React.Component {
         const {selectedRows} = this.state;
         if (selectedRows.length > 0) {
             Modal.confirm({
-                title: `确认删除策略吗？`,
+                title: `确认删除选中策略吗`,
                 onOk: this.handleDeleteOk,
                 onCancel: () => {
                     message.info('取消删除策略');
@@ -155,6 +159,12 @@ class Tables extends React.Component {
             message.warn('请选中要删除的策略');
         }
 
+    }
+
+    handleAddOrUpdateOk = () => {
+        this.setState({
+            visible: false
+        })
     }
 
 
@@ -189,6 +199,7 @@ class Tables extends React.Component {
                                     size="middle"
                                     style={{marginBottom: '5px'}}
                                 />
+                                <PolicyModal/>
                             </Card>
                         </div>
                     </Col>

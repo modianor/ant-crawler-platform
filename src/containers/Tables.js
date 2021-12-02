@@ -1,7 +1,6 @@
 import React from 'react'
-import {Button, Card, Col, Form, Input, message, Modal, Row, Table} from 'antd'
+import {Button, Card, Col, message, Modal, Row, Switch, Table} from 'antd'
 import Search from "antd/es/input/Search";
-import TextArea from "antd/es/input/TextArea";
 import PolicyModal from "./PolicyModal";
 
 class Tables extends React.Component {
@@ -29,9 +28,9 @@ class Tables extends React.Component {
                     align: 'center',
                     render: text => {
                         if ({text}.text === 1) {
-                            return '启用';
+                            return <Switch checkedChildren="开启" unCheckedChildren="关闭" /*checked={true}*/ defaultChecked/>
                         } else {
-                            return '关闭'
+                            return <Switch checkedChildren="开启" unCheckedChildren="关闭" /*checked={false}*//>
                         }
                     }
                 },
@@ -66,7 +65,7 @@ class Tables extends React.Component {
                     align: 'center',
                     render: (row) =>
                         <div>
-                            <Button type='primary' shape={"round"}>修改</Button>
+                            <Button type='primary' shape={"round"} onClick={this.handleAddOrUpdateOk}>修改</Button>
                             <Button style={{marginLeft: '5px'}} shape={"round"} danger>复制</Button>
                             {/*通过点击事件传递数据*/}
                         </div>
@@ -102,7 +101,94 @@ class Tables extends React.Component {
                     deduplicationServerId: 'crServer2_2',
                     taskType: 'List|Detail|Data',
                     periodTime: 180
-                }
+                },{
+                    key: '4',
+                    policyId: 'HEIMAOTOUSU',
+                    policyName: '黑猫投诉',
+                    policyState: 1,
+                    clusterId: 'cluster1',
+                    deduplicationServerId: 'crServer2_2',
+                    taskType: 'List|Detail|Data',
+                    periodTime: 180
+                },
+                {
+                    key: '5',
+                    policyId: 'XUEQIU',
+                    policyName: '雪球网',
+                    policyState: 0,
+                    clusterId: 'cluster1',
+                    deduplicationServerId: 'crServer2_2',
+                    taskType: 'List|Detail|Data',
+                    periodTime: 180
+                },
+                {
+                    key: '6',
+                    policyId: 'CPWS',
+                    policyName: '裁判文书',
+                    policyState: 1,
+                    clusterId: 'cluster1',
+                    deduplicationServerId: 'crServer2_2',
+                    taskType: 'List|Detail|Data',
+                    periodTime: 180
+                },{
+                    key: '7',
+                    policyId: 'HEIMAOTOUSU',
+                    policyName: '黑猫投诉',
+                    policyState: 1,
+                    clusterId: 'cluster1',
+                    deduplicationServerId: 'crServer2_2',
+                    taskType: 'List|Detail|Data',
+                    periodTime: 180
+                },
+                {
+                    key: '8',
+                    policyId: 'XUEQIU',
+                    policyName: '雪球网',
+                    policyState: 0,
+                    clusterId: 'cluster1',
+                    deduplicationServerId: 'crServer2_2',
+                    taskType: 'List|Detail|Data',
+                    periodTime: 180
+                },
+                {
+                    key: '9',
+                    policyId: 'CPWS',
+                    policyName: '裁判文书',
+                    policyState: 1,
+                    clusterId: 'cluster1',
+                    deduplicationServerId: 'crServer2_2',
+                    taskType: 'List|Detail|Data',
+                    periodTime: 180
+                },{
+                    key: '10',
+                    policyId: 'HEIMAOTOUSU',
+                    policyName: '黑猫投诉',
+                    policyState: 1,
+                    clusterId: 'cluster1',
+                    deduplicationServerId: 'crServer2_2',
+                    taskType: 'List|Detail|Data',
+                    periodTime: 180
+                },
+                {
+                    key: '11',
+                    policyId: 'XUEQIU',
+                    policyName: '雪球网',
+                    policyState: 0,
+                    clusterId: 'cluster1',
+                    deduplicationServerId: 'crServer2_2',
+                    taskType: 'List|Detail|Data',
+                    periodTime: 180
+                },
+                {
+                    key: '12',
+                    policyId: 'CPWS',
+                    policyName: '裁判文书',
+                    policyState: 1,
+                    clusterId: 'cluster1',
+                    deduplicationServerId: 'crServer2_2',
+                    taskType: 'List|Detail|Data',
+                    periodTime: 180
+                },
             ],
             selectedRows: [],
             rowSelection: {
@@ -117,7 +203,7 @@ class Tables extends React.Component {
                     name: record.policyId,
                 }),
             },
-            visible: true //修改弹框
+            visible: false //修改弹框
         }
         this.handleDeleteOk = this.handleDeleteOk.bind(this);
         this.deletePolicy = this.deletePolicy.bind(this);
@@ -163,10 +249,21 @@ class Tables extends React.Component {
 
     handleAddOrUpdateOk = () => {
         this.setState({
+            visible: true
+        })
+    }
+
+    handleModalOk = () => {
+        this.setState({
             visible: false
         })
     }
 
+    handleModalCancel = () => {
+        this.setState({
+            visible: false
+        })
+    }
 
     render() {
         return (
@@ -199,7 +296,19 @@ class Tables extends React.Component {
                                     size="middle"
                                     style={{marginBottom: '5px'}}
                                 />
-                                <PolicyModal/>
+
+                                <Modal
+                                    visible={this.state.visible}
+                                    title={this.state.title}
+                                    onCancel={this.handleModalCancel}
+                                    onOk={this.handleModalOk}
+                                    // footer={null}
+                                    destroyOnClose
+                                >
+                                    <PolicyModal visible={this.state.visible} modalType={1}
+                                                 policy={this.state.dataSource[0]}/>
+                                </Modal>
+
                             </Card>
                         </div>
                     </Col>

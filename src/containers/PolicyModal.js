@@ -13,9 +13,9 @@ class PolicyModal extends Component {
             modalType: this.props['modalType'], // 1代表添加 0代表修改更新
             policy: this.props['policy']
         }
-        this.setState({
-            title: this.state.modalType === 1 ? '策略添加' : '策略修改'
-        })
+        // this.setState({
+        //     title: this.state.modalType === 1 ? '策略添加' : '策略修改'
+        // })
     }
 
     handleAddOrUpdateOk = () => {
@@ -43,13 +43,14 @@ class PolicyModal extends Component {
                     >
                         <Form.Item label="策略ID" name="policyId"
                                    style={{marginBottom: 0}}>
-                            <Input defaultValue={this.state.policy.policyId} disabled={true}/>
+                            <Input defaultValue={this.state.modalType === 1 ? this.state.policy.policyId : ''}
+                                   disabled={this.state.modalType === 1}/>
                         </Form.Item>
                         <Form.Item label="策略名称" name="policyName" style={{marginBottom: 0}}>
-                            <Input defaultValue={this.state.policy.policyName}/>
+                            <Input defaultValue={this.state.modalType === 1 ? this.state.policy.policyName : ''}/>
                         </Form.Item>
                         <Form.Item label="使用状态" name="policyState" style={{marginBottom: 0}}>
-                            <Input defaultValue={this.state.policy.policyState === 1 ? '开启' : '关闭'} disabled={true}/>
+                            <Input defaultValue={this.state.policy.policyState ? '开启' : '关闭'} disabled={true}/>
                         </Form.Item>
                         <Form.Item label="任务类型" name="taskType" style={{marginBottom: 0}}>
                             <CheckboxGroup options={plainOptions}/>
@@ -63,22 +64,6 @@ class PolicyModal extends Component {
                         <Form.Item label="issue任务抓取表达式" name="issueExpress" style={{marginBottom: 0,}}>
                             <TextArea defaultValue={this.state.policy.dataExpress}/>
                         </Form.Item>
-                        {/*<Form.Item label="TreeSelect">*/}
-                        {/*    <TreeSelect*/}
-                        {/*        treeData={[*/}
-                        {/*            {title: 'Light', value: 'light', children: [{title: 'Bamboo', value: 'bamboo'}]},*/}
-                        {/*        ]}*/}
-                        {/*    />*/}
-                        {/*</Form.Item>*/}
-                        {/*<Form.Item label="DatePicker">*/}
-                        {/*    <DatePicker/>*/}
-                        {/*</Form.Item>*/}
-                        {/*<Form.Item label="Switch" valuePropName="checked">*/}
-                        {/*    <Switch/>*/}
-                        {/*</Form.Item>*/}
-                        {/*<Form.Item label="Button">*/}
-                        {/*    <Button>Button</Button>*/}
-                        {/*</Form.Item>*/}
                     </Form>
                 </TabPane>
                 <TabPane tab="高级模式" key="2">

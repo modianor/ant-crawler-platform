@@ -26,13 +26,10 @@ class Tables extends React.Component {
                     dataIndex: 'policyState',
                     key: 'policyState',
                     align: 'center',
-                    render: text => {
-                        if ({text}.text === 1) {
-                            return <Switch checkedChildren="开启" unCheckedChildren="关闭" /*checked={true}*/
-                                           defaultChecked/>
-                        } else {
-                            return <Switch checkedChildren="开启" unCheckedChildren="关闭" /*checked={false}*//>
-                        }
+                    render: (policyState, policy) => {
+                        return <Switch checkedChildren="开启" unCheckedChildren="关闭"
+                                       onClick={this.handleChangePolicyState.bind(this, !policy.policyState, policy)} /*checked={true}*/
+                                       defaultChecked={policy.policyState}/>
                     }
                 },
                 {
@@ -69,7 +66,9 @@ class Tables extends React.Component {
                             <div>
                                 <Button type='primary' shape={"round"}
                                         onClick={this.handleAddOrUpdateOk.bind(this, policy)}>修改</Button>
-                                <Button style={{marginLeft: '5px'}} shape={"round"} danger>复制</Button>
+                                <Button style={{marginLeft: '5px'}} shape={"round"}
+                                        onClick={this.handleCopy.bind(this, policy)}
+                                        danger>复制</Button>
                                 {/*通过点击事件传递数据*/}
                             </div>
                         )
@@ -130,7 +129,8 @@ class Tables extends React.Component {
                     name: record.policyId,
                 }),
             },
-            visible: false //修改弹框
+            visible: false, //修改弹框
+            modalType: 1 //修改 or 复制
         }
         this.handleDeleteOk = this.handleDeleteOk.bind(this);
         this.deletePolicy = this.deletePolicy.bind(this);
@@ -158,6 +158,22 @@ class Tables extends React.Component {
         }
     };
 
+    handleChangePolicyState = (state, policy) => {
+        console.log(state, policy);
+        const {dataSource} = this.state;
+        for (let i = 0; i < dataSource.length; i++) {
+            let curPolicy = dataSource[i];
+            if (curPolicy.policyId === policy.policyId) {
+                dataSource[i].policyState = state;
+                this.setState({dataSource: dataSource});
+                break;
+            }
+        }
+        this.setState({
+            curPolicy: policy
+        })
+    }
+
     deletePolicy = () => {
         const {selectedRows} = this.state;
         if (selectedRows.length > 0) {
@@ -178,6 +194,15 @@ class Tables extends React.Component {
         this.setState({
             visible: true,
             curPolicy: policy,
+            modalType: 1
+        })
+    }
+
+    handleCopy = (policy) => {
+        this.setState({
+            visible: true,
+            curPolicy: policy,
+            modalType: 2
         })
     }
 
@@ -235,7 +260,7 @@ class Tables extends React.Component {
                                         maskClosable={false}
                                         destroyOnClose
                                     >
-                                        <PolicyModal visible={this.state.visible} modalType={1}
+                                        <PolicyModal visible={this.state.visible} modalType={this.state.modalType}
                                                      policy={this.state.curPolicy}/>
                                     </Modal>) : null}
 
